@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noth1ng: как идёт проект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tektur:wght@500;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Один тёмный мир: графит, светлый текст, красный акцент. Компоновка: слева меню-сайдбар, справа сводка и раскрывающиеся разделы. */
+:root{
+  --bg:#0f1116;
+  --panel:#171a22;
+  --line:#2a2e39;
+  --text:#f1f2f4;
+  --muted:#a4acb8;
+  --accent:#f44b42;
+  --ok:#5ccf8f;
+  --warn:#f0b25a;
+  --stop:#f26d6d;
+  --idle:#6c7483;
+  --display:"Tektur","Arial Narrow",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:16.5px;line-height:1.6;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+
+/* Сайдбар */
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 16px;border-right:1px solid var(--line);background:#0c0e13;display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;letter-spacing:.04em;font-size:17px}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+.side nav{display:grid;gap:4px}
+.side nav a{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:10px;font-size:15.5px;border:1px solid transparent}
+.side nav a:hover{background:var(--panel);color:var(--text)}
+.side nav a.on{background:var(--panel);color:var(--text);border-color:var(--line)}
+.side nav a em{font-style:normal;font-size:12.5px;color:var(--idle);font-variant-numeric:tabular-nums}
+.side .tools{display:grid;gap:8px;margin-top:auto}
+.side button{font:inherit;font-size:14.5px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;text-align:left}
+.side button:hover{color:var(--text);border-color:var(--idle)}
+.side .stamp{font-size:13px;color:var(--idle);line-height:1.4}
+
+/* Основная колонка */
+main{padding:0 32px 64px;max-width:900px;width:100%}
+.hero{padding:44px 0 28px}
+.kicker{color:var(--muted);font-size:14.5px;margin-bottom:12px}
+.hero h1{font-size:clamp(30px,5.5vw,48px);max-width:15em}
+.lead{margin-top:16px;max-width:38em;color:var(--muted);font-size:18px}
+.lead b{color:var(--text);font-weight:600}
+.cards2{margin-top:24px;display:grid;grid-template-columns:auto 1fr 1fr;gap:14px;align-items:stretch}
+.cards2>div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+.cards2 .gate{display:flex;align-items:center;gap:16px}
+.big{font-family:var(--display);font-weight:700;font-size:54px;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-size:.38em;color:var(--accent);margin-left:4px}
+.cards2 h3{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.cards2 p{font-size:16px}
+.cards2 .sm{color:var(--muted);font-size:14px;margin-top:4px}
+
+/* Разделы-шапки */
+.acc{display:grid;gap:12px;margin-top:8px}
+details.sec{background:var(--panel);border:1px solid var(--line);border-radius:16px;scroll-margin-top:16px}
+details.sec[open]{border-color:#3a3f4c}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 22px;border-radius:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;flex:none}
+details[open]>summary::after{transform:rotate(-135deg)}
+summary:hover{background:rgba(255,255,255,.02)}
+.sec>summary h2{font-size:21px;flex:0 1 auto}
+.sec .badge{font-size:13px;font-weight:600;padding:3px 11px;border-radius:999px;border:1px solid var(--idle);color:var(--muted);white-space:nowrap}
+.sec .body{padding:4px 22px 22px;display:grid;gap:14px}
+.sub{color:var(--muted);max-width:40em}
+
+.light{font-size:13px;font-weight:600;padding:3px 11px;border-radius:999px;border:1px solid;white-space:nowrap}
+.light.g{color:var(--ok);border-color:var(--ok)}
+.light.a{color:var(--warn);border-color:var(--warn)}
+.light.r{color:var(--stop);border-color:var(--stop)}
+.light.n{color:var(--idle);border-color:var(--idle)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;color:var(--muted);font-size:14.5px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+.dot.g{background:var(--ok)}.dot.a{background:var(--warn)}.dot.r{background:var(--stop)}.dot.n{background:var(--idle)}
+
+.chain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chain li{border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:15px;color:var(--muted)}
+.chain li.here{border-color:var(--accent);color:var(--text)}
+.chain li+li::before{content:"→";margin-right:10px;color:var(--idle)}
+
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.checks li{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.checks .ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;border:2px solid var(--idle);color:var(--idle)}
+.checks .half .ic{border-color:var(--warn);color:var(--warn)}
+.checks small{display:block;color:var(--muted);font-size:14px}
+.chip{font-size:13px;font-weight:600;padding:3px 11px;border-radius:999px;border:1px solid var(--idle);color:var(--idle);white-space:nowrap}
+.half .chip{border-color:var(--warn);color:var(--warn)}
+
+.cards{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.cards li{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.cards b{display:block;margin-bottom:3px;font-weight:600}
+.cards span{color:var(--muted);font-size:15.5px}
+.cards .meta{display:block;margin-top:6px;font-size:14px;color:var(--idle)}
+
+/* Этапы: вложенные шапки */
+.stages{display:grid;gap:10px}
+details.stage{border:1px solid var(--line);border-radius:14px;background:#13161d}
+details.stage.current{border-color:var(--accent)}
+details.stage>summary{padding:14px 18px;gap:12px;flex-wrap:wrap}
+.stage .num{font-family:var(--display);font-weight:700;color:var(--muted);font-size:15px;min-width:22px}
+.stage summary h3{font-size:18px;flex:1 1 200px}
+.stage .mini{display:flex;align-items:center;gap:10px;min-width:150px}
+.meter{height:8px;background:var(--line);border-radius:5px;overflow:hidden;flex:1;min-width:70px}
+.meter b{display:block;height:100%;background:var(--accent);border-radius:5px}
+.stage .mini span{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage .inner{padding:2px 18px 18px;display:grid;gap:12px}
+.plain{font-size:16px}
+.why{color:var(--muted);font-size:15px}
+.why b{color:var(--text);font-weight:600}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.items li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:15.5px;color:var(--muted)}
+.items li::before{content:"";width:16px;height:16px;margin-top:5px;border-radius:50%;border:2px solid var(--idle)}
+.items .d{color:var(--text)}
+.items .d::before{background:var(--ok);border-color:var(--ok)}
+.items .p::before{border-color:var(--warn);background:linear-gradient(90deg,var(--warn) 50%,transparent 50%)}
+
+.log{list-style:none;margin:0;padding:0}
+.log li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.log li:last-child{border-bottom:0}
+.log time{color:var(--muted);font-size:15px}
+
+.what{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.what div,.goal div{border:1px solid var(--line);border-radius:12px;padding:16px}
+.what h3,.goal h3{font-size:17px;margin-bottom:6px}
+.what p,.goal p{color:var(--muted);font-size:15.5px}
+.goal{display:grid;gap:12px}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;color:var(--accent);border:1px solid var(--accent);padding:2px 10px;border-radius:999px;margin-bottom:8px}
+dl{margin:0}
+dl div{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+dl div:last-child{border-bottom:0}
+dt{font-weight:600}
+dd{margin:0;color:var(--muted);font-size:15.5px}
+
+footer{margin-top:36px;color:var(--muted);font-size:14px}
+footer p+p{margin-top:6px}
+
+/* Телефон: меню сверху полосой */
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .side{position:sticky;top:0;z-index:5;height:auto;flex-direction:row;align-items:center;gap:12px;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden}
+  .side .brand{flex:none}
+  .side nav{display:flex;gap:6px;flex:none}
+  .side nav a{white-space:nowrap;padding:8px 12px}
+  .side nav a em{display:none}
+  .side .tools,.side .stamp{display:none}
+  main{padding:0 16px 56px}
+  .cards2{grid-template-columns:1fr}
+  .what{grid-template-columns:1fr}
+  .checks li{grid-template-columns:auto 1fr}
+  .checks .chip{grid-column:2;justify-self:start}
+  .log li,dl div{grid-template-columns:1fr;gap:3px}
+  html{scroll-padding-top:70px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}summary::after{transition:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="side" aria-label="Меню страницы">
+  <div class="brand"><i></i>NOTH1NG</div>
+  <nav id="nav">
+    <a href="#svodka" data-t="svodka">Сводка</a>
+    <a href="#perehod" data-t="perehod">Условия перехода <em>0/6</em></a>
+    <a href="#resheniya" data-t="resheniya">Ждём решений <em>3</em></a>
+    <a href="#riski" data-t="riski">Риски <em>4</em></a>
+    <a href="#karta" data-t="karta">Дорожная карта <em>6+1</em></a>
+    <a href="#novoe" data-t="novoe">Что нового</a>
+    <a href="#o-proekte" data-t="o-proekte">О проекте</a>
+    <a href="#slova" data-t="slova">Слова</a>
+  </nav>
+  <div class="tools">
+    <button type="button" id="openAll">Раскрыть всё</button>
+    <button type="button" id="closeAll">Свернуть всё</button>
+  </div>
+  <p class="stamp">Обновлено 23 ноября 2026.<br>Данные по проекту: на 22 ноября.</p>
+</aside>
+
+<main>
+  <div class="hero" id="svodka">
+    <p class="kicker">Обновлено 23 ноября 2026 · данные на 22 ноября</p>
+    <h1>Переводим клуб на собственную систему</h1>
+    <p class="lead">Мы делаем программу, которая управляет компьютерным клубом: время игроков, оплата, касса, администратор.</p>
+    <p class="lead"><b>Коротко:</b> проект движется, дата перехода не назначена, главное препятствие сейчас — установка программы на компьютеры клуба.</p>
+    <div class="cards2">
+      <div class="gate"><div class="big">0<small>из 6</small></div><div><h3>Условий для перехода</h3><p class="sm">ещё 2 готовы частично</p></div></div>
+      <div><h3>Следующий шаг</h3><p>Проверить единый установщик на пробном компьютере.</p><p class="sm">Делает: владелец вместе с Claude</p></div>
+      <div><h3>Сейчас идёт этап</h3><p>3. Установка на все компьютеры.</p><p class="sm">Статус: есть риск</p></div>
+    </div>
+  </div>
+
+  <div class="acc">
+
+    <details class="sec" id="perehod">
+      <summary><h2>Условия для перехода</h2><span class="badge">0 из 6</span></summary>
+      <div class="body">
+        <p class="sub">Работы идут в таком порядке: следующая ступень не начинается, пока не готова предыдущая.</p>
+        <ol class="chain"><li class="here">Установка на все компьютеры</li><li>Живые проверки</li><li>Проверка копий данных</li><li>Выбор даты</li></ol>
+        <p class="sub">Дату выбираем, когда закрыты все шесть пунктов. Сейчас не закрыт ни один, два готовы частично.</p>
+        <ul class="checks">
+          <li class="half"><span class="ic">~</span><div>Работа без связи с сервером<small>Запас времени при обрыве работает, осталось проверить редкие случаи</small></div><span class="chip">Частично</span></li>
+          <li><span class="ic"></span><div>Программа стоит на всех компьютерах клуба<small>Работает только на одном пробном компьютере</small></div><span class="chip">Не готово</span></li>
+          <li><span class="ic"></span><div>Первый вход перенесённого клиента<small>Проверка на одном тестовом клиенте</small></div><span class="chip">Не проверено</span></li>
+          <li><span class="ic"></span><div>Полный цикл игровой сессии<small>Вход, оплата, игра, предупреждения, конец времени</small></div><span class="chip">Не проверено</span></li>
+          <li><span class="ic"></span><div>Тестовая смена в кассе<small>Открытие, операции, отчёты, закрытие</small></div><span class="chip">Не проверено</span></li>
+          <li class="half"><span class="ic">~</span><div>Копии базы и восстановление<small>Копии делаются каждый день; восстановление надо проверить заново</small></div><span class="chip">Частично</span></li>
+        </ul>
+        <p class="sub">Вывод: назначать дату рано.</p>
+      </div>
+    </details>
+
+    <details class="sec" id="resheniya">
+      <summary><h2>Ждём решения владельца</h2><span class="badge">3</span></summary>
+      <div class="body">
+        <p class="sub">Вопросы, от ответов на которые зависит ход работы. По состоянию на 22 ноября.</p>
+        <ul class="cards">
+          <li><b>Какие два компьютера и когда использовать для проверки установки</b><span>Нужны места из разных залов, на которых можно спокойно перезагружаться, в нерабочее время.</span><span class="meta">Открыт с 21 ноября</span></li>
+          <li><b>Когда прекращать продажу абонементов в прежней системе</b><span>Абонементы не переносятся, поэтому клиентов нужно заранее предупредить. Решается, когда будет дата перехода.</span><span class="meta">Открыт с 20 ноября</span></li>
+          <li><b>Дата перехода</b><span>Назначается после того, как закрыты шесть условий.</span><span class="meta">Ждёт условий</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="sec" id="riski">
+      <summary><h2>Что может пойти не так</h2><span class="badge">4</span></summary>
+      <div class="body">
+        <ul class="cards">
+          <li><b>Установка через общий образ ещё не проверялась на реальных компьютерах</b><span>Что делаем: сначала пробуем на тестовой копии образа, рабочий не трогаем.</span><span class="meta">Риск: средний</span></li>
+          <li><b>Восстановление данных из копии нужно проверить заново перед переходом</b><span>Что делаем: повторим проверку за один-два дня до перехода и один раз потренируем возврат к копии.</span><span class="meta">Риск: средний</span></li>
+          <li><b>Часть автоматических проверок временно отключена</b><span>Что делаем: проверки запускаются вручную. На работу клуба это не влияет.</span><span class="meta">Риск: низкий</span></li>
+          <li><b>При долгом обрыве связи игрок может потерять до 5 минут игры</b><span>Решение владельца: принимаем. Вернёмся к вопросу, если такие случаи будут частыми.</span><span class="meta">Риск: низкий, принят</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="sec" id="karta">
+      <summary><h2>Дорожная карта</h2><span class="badge">6 этапов + 1</span></summary>
+      <div class="body">
+        <p class="sub">Нажмите на этап, чтобы увидеть шаги. Часть работ идёт параллельно.</p>
+        <p class="legend" aria-label="Условные обозначения">
+          <span><i class="dot g"></i>идёт по плану</span><span><i class="dot a"></i>есть риск</span><span><i class="dot r"></i>стоим</span><span><i class="dot n"></i>ещё не начат</span>
+        </p>
+        <div class="stages">
+
+          <details class="stage">
+            <summary><span class="num">1</span><h3>Админ-панель</h3><span class="light g">Идёт по плану</span><span class="mini"><span class="meter"><b style="width:58%"></b></span><span>3,5 из 6</span></span></summary>
+            <div class="inner">
+              <p class="plain">Переделываем все экраны панели по готовому макету, чтобы работать было удобно.</p>
+              <ul class="items">
+                <li class="d">Карта клуба, касса, клиенты, брони</li>
+                <li class="p">Магазин, тарифы, акции</li>
+                <li class="p">Отчёты и журналы</li>
+                <li class="p">Технические экраны (сервер, диагностика, обновления)</li>
+                <li class="d">Экраны настроек</li>
+                <li>Итоговая сверка всех экранов с макетом</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="stage">
+            <summary><span class="num">2</span><h3>Программа на компьютере и работа без связи</h3><span class="light g">Идёт по плану</span><span class="mini"><span class="meter"><b style="width:60%"></b></span><span>6 из 10</span></span></summary>
+            <div class="inner">
+              <p class="plain">Если связь с сервером пропадёт, игрок не должен сразу вылететь из игры. Для этого сделан небольшой запас времени.</p>
+              <ul class="items">
+                <li class="d">Запас без связи на сервере</li>
+                <li class="d">Запас без связи в программе игрока</li>
+                <li class="d">Перезапуск программы при сбое</li>
+                <li class="d">Установка на пробный компьютер</li>
+                <li class="d">Проверка короткого обрыва связи</li>
+                <li class="d">Проверка долгого обрыва связи</li>
+                <li>Обрыв на 3–5 минут</li>
+                <li>Выход из игры без связи</li>
+                <li>Сбой программы без связи</li>
+                <li>Проверка на тарифе с пакетом времени</li>
+              </ul>
+              <p class="why"><b>Почему не красный:</b> оставшиеся проверки отложены специально, на конец перед переходом.</p>
+            </div>
+          </details>
+
+          <details class="stage current" open>
+            <summary><span class="num">3</span><h3>Установка на все компьютеры</h3><span class="light a">Есть риск</span><span class="mini"><span class="meter"><b style="width:29%"></b></span><span>2 из 7</span></span></summary>
+            <div class="inner">
+              <p class="plain">Клубные компьютеры загружаются с общего образа, поэтому программу ставят один раз в образ, а не на каждый компьютер.</p>
+              <ul class="items">
+                <li class="d">Выяснили, почему простой установщик не подошёл</li>
+                <li class="d">Собрали единый установщик со всеми нужными частями</li>
+                <li>Проверить, что внутри установщика</li>
+                <li>Пробная установка на тестовом компьютере</li>
+                <li>Два компьютера из разных залов и несколько перезагрузок</li>
+                <li>Удалённое подключение администратора к компьютерам</li>
+                <li>Рабочий образ для всего клуба</li>
+              </ul>
+              <p class="why"><b>Почему жёлтый:</b> такой способ установки на реальных компьютерах клуба ещё ни разу не проверяли.</p>
+            </div>
+          </details>
+
+          <details class="stage">
+            <summary><span class="num">4</span><h3>Перенос клиентов из прежней системы</h3><span class="light g">Идёт по плану</span><span class="mini"><span class="meter"><b style="width:40%"></b></span><span>2 из 5</span></span></summary>
+            <div class="inner">
+              <p class="plain">Клиенты и их баланс переедут одним днём, чтобы деньги не потратили дважды. Абонементы и брони не переносятся.</p>
+              <ul class="items">
+                <li class="d">Перенос написан</li>
+                <li class="d">Репетиция без денег прошла без ошибок</li>
+                <li>Проверка на одном тестовом клиенте</li>
+                <li>Брони переписать вручную в день перехода</li>
+                <li>Свежая выгрузка и сверка в день перехода</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="stage">
+            <summary><span class="num">5</span><h3>Проверки перед переходом</h3><span class="light a">Есть риск</span><span class="mini"><span class="meter"><b style="width:33%"></b></span><span>2 из 6</span></span></summary>
+            <div class="inner">
+              <p class="plain">Прежде чем переходить, пройдём всё вживую на тестовых деньгах и убедимся, что данные можно восстановить.</p>
+              <ul class="items">
+                <li class="d">Копия базы делается каждый день</li>
+                <li class="d">Ключ от копий хранится в отдельном месте</li>
+                <li>Полный цикл игровой сессии</li>
+                <li>Тестовая смена в кассе</li>
+                <li>Проверка восстановления из копии</li>
+                <li>Тренировка возврата к копии</li>
+              </ul>
+              <p class="why"><b>Почему жёлтый:</b> живые проверки и проверка восстановления данных ещё впереди.</p>
+            </div>
+          </details>
+
+          <details class="stage">
+            <summary><span class="num">6</span><h3>День перехода</h3><span class="light n">Ещё не начат</span></summary>
+            <div class="inner">
+              <p class="plain">Один день, когда весь клуб переходит на новую систему. Пошаговая инструкция из двенадцати пунктов уже написана. Дату выберет владелец.</p>
+            </div>
+          </details>
+
+          <details class="stage">
+            <summary><span class="num">+</span><h3>Потом: другие клубы</h3><span class="light n">Планы</span></summary>
+            <div class="inner">
+              <p class="plain">Платформа задумана так, чтобы её могли использовать и другие клубы. Этим займёмся после того, как свой клуб стабильно работает. Сроков пока нет.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </details>
+
+    <details class="sec" id="novoe">
+      <summary><h2>Что нового</h2><span class="badge">4 записи</span></summary>
+      <div class="body">
+        <ul class="log">
+          <li><time datetime="2026-11-22">22 ноября</time><span>Собран единый установщик программы и подключён к скачиванию в админ-панели.</span></li>
+          <li><time datetime="2026-11-22">22 ноября</time><span>Банковская сверка в панели, уборка старого экрана, окно пополнения на карте клуба.</span></li>
+          <li><time datetime="2026-11-21">21 ноября</time><span>Все 11 экранов настроек в панели переделаны по макету.</span></li>
+          <li><time datetime="2026-11-21">21 ноября</time><span>Режим «запас без связи» готов и проверен на пробном компьютере.</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="sec" id="o-proekte">
+      <summary><h2>О проекте и цель</h2></summary>
+      <div class="body">
+        <div class="what">
+          <div><h3>Админ-панель</h3><p>Сайт для администратора и владельца: карта клуба, касса, клиенты, брони, тарифы, отчёты, настройки. Называется Ops.</p></div>
+          <div><h3>Программа на компьютере клиента</h3><p>То, что игрок видит за столом: вход, оставшееся время, баланс, запуск игр. Называется Shell.</p></div>
+          <div><h3>Сервер</h3><p>Хранит клиентов, оплаты и сессии и связывает панель с компьютерами. Работает в интернете, на сервисе Railway.</p></div>
+        </div>
+        <div class="goal">
+          <div><span class="tag">Ближайшая цель</span><h3>Весь клуб на своей системе</h3><p>Все компьютеры, касса, отчёты и брони работают в нашей программе вместо прежней.</p></div>
+          <div><span class="tag">В будущем</span><h3>Платформа и для других клубов</h3><p>После перехода можно подключать другие клубы. Как именно, решим позже.</p></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="sec" id="slova">
+      <summary><h2>Слова, которые встречаются</h2></summary>
+      <div class="body">
+        <dl>
+          <div><dt>Ops</dt><dd>Админ-панель клуба в браузере.</dd></div>
+          <div><dt>Shell</dt><dd>Программа на игровом компьютере: вход игрока, время, баланс, запуск игр.</dd></div>
+          <div><dt>Сервер</dt><dd>Главный компьютер в интернете, который хранит данные и связывает всё вместе.</dd></div>
+          <div><dt>Railway</dt><dd>Сервис, на котором работает сервер.</dd></div>
+          <div><dt>Образ</dt><dd>Готовая копия системы. Бездисковые компьютеры клуба загружаются из неё, поэтому программу достаточно поставить в образ один раз.</dd></div>
+          <div><dt>Установщик</dt><dd>Программа, которая сама ставит нужные части на компьютер.</dd></div>
+          <div><dt>Запас без связи</dt><dd>Несколько минут игры, которые разрешены, если пропала связь с сервером.</dd></div>
+          <div><dt>Откат</dt><dd>Возврат к состоянию до изменений. Поэтому перед переходом мы делаем копии данных и проверки.</dd></div>
+          <div><dt>День перехода</dt><dd>День, когда клуб полностью переходит на новую систему.</dd></div>
+        </dl>
+      </div>
+    </details>
+  </div>
+
+  <footer>
+    <p>Страницу обновляет Claude по запросу владельца. Дата сверху показывает, когда это было в последний раз.</p>
+    <p>Проценты внутри этапов считаются по числу шагов: готовый шаг — 1, частично готовый — 0,5. Это оценка, а не точный расчёт.</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('details.sec'));
+  var links=[].slice.call(document.querySelectorAll('#nav a'));
+  function mark(id){
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('data-t')===id);});
+  }
+  function go(id,push){
+    var el=document.getElementById(id);
+    if(!el)return;
+    if(el.tagName==='DETAILS')el.open=true;
+    el.scrollIntoView({block:'start'});
+    mark(id);
+    if(push){try{history.replaceState(null,'','#'+id);}catch(e){}}
+  }
+  links.forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      go(a.getAttribute('data-t'),true);
+    });
+  });
+  document.getElementById('openAll').addEventListener('click',function(){
+    secs.forEach(function(d){d.open=true;});
+    [].forEach.call(document.querySelectorAll('details.stage'),function(d){d.open=true;});
+  });
+  document.getElementById('closeAll').addEventListener('click',function(){
+    secs.forEach(function(d){d.open=false;});
+    [].forEach.call(document.querySelectorAll('details.stage'),function(d){d.open=false;});
+  });
+  if('IntersectionObserver' in window){
+    var ids=['svodka'].concat(secs.map(function(d){return d.id;}));
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});
+    },{rootMargin:'-20% 0px -70% 0px'});
+    ids.forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
+  }
+  var h=(location.hash||'').replace('#','');
+  if(h&&document.getElementById(h))go(h,false);else mark('svodka');
+  window.addEventListener('hashchange',function(){var x=(location.hash||'').replace('#','');if(x)go(x,false);});
+})();
+</script>
+</body>
+</html>
