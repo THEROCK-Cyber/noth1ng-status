@@ -1,0 +1,53 @@
+/* One screen shell. Each workspace owns its own scrolling. */
+:root{--glass:rgba(25,29,39,.42)}
+html,body{height:100%;min-height:0;overflow:hidden}
+.shell{height:100dvh;min-height:0;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:12px;padding:16px 24px}
+.glass{background:linear-gradient(130deg,#ffffff0c,#ffffff02),var(--glass);backdrop-filter:blur(22px) saturate(1.15);-webkit-backdrop-filter:blur(22px) saturate(1.15)}
+.backdrop:after{background:linear-gradient(110deg,#12151b35,#15192320,#190f1c35),linear-gradient(0deg,#0c0d1265,transparent)}
+.wallpaper{opacity:.65;filter:blur(12px) saturate(.8)}
+.header{min-height:68px;padding:8px 14px;gap:20px}
+#content{min-height:0;overflow:auto;overscroll-behavior:contain;padding:6px}
+#content>.page{min-height:100%;padding:0 2px 8px}
+#content:has(.library-layout){overflow:hidden}
+#content>.page:has(.library-layout){height:100%;min-height:0;display:flex;flex-direction:column;padding-bottom:0}
+.page-head{flex:none;margin:4px 0 14px;align-items:center}
+.page-head h1{font-size:clamp(22px,2vw,32px)}.subtitle{margin-top:6px}
+.library-layout{flex:1;min-height:0;align-items:stretch;gap:20px}
+.library-layout>section:first-child{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0;min-width:0}
+.filters{margin-bottom:8px}
+#games-grid{display:flex;gap:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;perspective:none;min-height:0;padding:8px;margin:0 -8px;overscroll-behavior:contain;touch-action:pan-x pan-y}
+#games-grid::-webkit-scrollbar{display:none}
+.library-sheet{display:grid;flex:0 0 100%;min-width:0;min-height:0;gap:16px;padding:4px 8px 10px;scroll-snap-align:start;scroll-snap-stop:always;perspective:1100px;align-content:center}
+.library-sheet .game-wrap{height:100%;min-height:0}
+.library-sheet .game-card{height:100%;max-height:100%;aspect-ratio:auto}
+.library-sheet .game-card img{display:block;object-fit:contain}
+.library-sheet .card-caption{right:58px}
+.library-sheet .game-card:focus-visible{outline-offset:2px}
+.library-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:5px 0 0;font-size:12px;color:var(--muted)}
+.library-pager button{min-width:40px;min-height:36px;padding:7px 12px;border-radius:9px;background:#ffffff12;color:#fff}
+.library-pager button:disabled{opacity:.3}
+.library-page-label{font-variant-numeric:tabular-nums;text-align:center}
+.library-pager .mobile-details{display:none}
+.library-note{display:none}
+.library-layout>.selected-panel{position:static;height:100%;max-height:none!important;min-height:0;overflow:auto;overscroll-behavior:contain;padding:18px;background-color:rgba(24,28,38,.34)}
+.selected-panel h2{font-size:clamp(18px,1.5vw,24px)}
+.selected-panel .art-holder{margin-bottom:16px}
+.session{margin:0;min-height:70px;padding:12px 20px;gap:22px}
+.session-stat>strong{font-size:20px}.session-stat>span{margin-bottom:4px}.session-stat.package strong{font-size:12px}
+.drawer{background-color:rgba(25,29,39,.77)}
+.details-close{display:none}
+body.solid{--glass:rgba(27,30,38,.98)}body.solid .selected-panel,body.solid .drawer{background-color:#1b1e26}
+@media(min-width:1600px){.shell{padding:22px 32px;gap:14px}.library-layout{gap:26px}.library-sheet{gap:20px}.header{padding:10px 20px}}
+@media(max-height:800px){.shell{padding:10px 18px;gap:8px}.header{min-height:60px}.brand img{width:36px;height:36px}.subtitle{display:none}.page-head{margin:0 0 8px}.page-head h1{font-size:24px}.session{min-height:60px;padding:9px 16px}.session-stat>strong{font-size:18px}.filter{padding-top:6px;padding-bottom:6px}}
+@media(max-width:1200px){.header{gap:12px}.shell{padding:12px 16px}.session{gap:16px}.selected-panel{padding:14px}}
+@media(max-width:900px){.shell{padding:12px;gap:9px}.header{gap:7px}.header nav{padding-top:6px}.nav-indicator{top:6px}.library-layout{grid-template-columns:minmax(0,1fr)}.library-layout>.selected-panel{display:none}.library-pager .mobile-details{display:block}.selected-panel:popover-open{display:block;position:fixed;inset:16px;margin:auto;width:min(600px,calc(100vw - 32px));height:auto;max-height:calc(100dvh - 32px)!important;z-index:50;padding:20px;background:rgba(24,28,38,.93);border:1px solid #ffffff30;border-radius:16px;overflow:auto}.selected-panel::backdrop{background:#080a1277;backdrop-filter:blur(8px)}.selected-panel:popover-open .details-close{display:block;position:sticky;top:0;margin-left:auto;min-height:36px;padding:8px 12px;border-radius:8px;background:#343946;z-index:2}.session-stat.package{display:none}.pc{flex:0 1 auto;margin-left:auto}.pc em{display:none}.time{padding-left:16px}.help{margin:0}.selected-panel:popover-open .art-holder{margin-top:10px}.selected-panel:popover-open .selected-art{height:auto;aspect-ratio:16/9}}
+@media(max-width:600px){.shell{padding:8px;gap:6px}.header{padding:8px}.brand>span{font-size:13px}.brand img{width:28px;height:28px}.brand small{font-size:7px}.header-actions button{height:32px}.header nav button{font-size:11px;padding:9px 3px}.page-head{display:block;margin:0 0 6px}.page-head h1{font-size:20px}.page-head .search{margin-top:8px;height:36px}.filters{justify-content:flex-start;gap:1px;margin-bottom:3px}.filter{font-size:10px;padding:5px 6px}.library-sheet{gap:12px}.session{flex-wrap:nowrap;padding:9px 10px;gap:12px;justify-content:space-between}.session-stat>span{font-size:9px}.session-stat>strong{font-size:16px}.session .pc{width:auto;border:0;padding:0;margin:0;flex:0 0 auto}.pc>.icon{width:22px;height:22px}.pc>span{display:none}.time{border:0;padding:0}.session .help{width:28px;height:28px}.library-pager{gap:5px;font-size:11px}.library-pager button{padding:5px 9px}.demo-line{padding:0 3px}.card-caption small{font-size:10px}}
+@media(prefers-reduced-motion:reduce){#games-grid{scroll-behavior:auto}}
+
+#games-grid{padding:0}
+
+.shell{grid-template-columns:minmax(0,1fr)}.shell>*{min-width:0}#games-grid:focus-visible{outline:2px solid #ac80f577;outline-offset:-2px;border-radius:12px}.library-sheet .game-card{background:rgba(20,24,33,.4)}.library-sheet .game-card img{background:transparent}.library-page-label{min-width:0}
+@media(max-width:340px){.session{gap:7px;padding:8px}.session-stat>strong{font-size:14px}.library-pager{gap:3px}.library-pager button{padding:5px 7px}}
+
+/* Keep covers filling the full frame. */
+.library-sheet .game-card img,.selected-art{object-fit:cover}.game-card img{object-fit:cover}

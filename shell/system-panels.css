@@ -1,0 +1,10 @@
+/* Direct Windows panels, immediately before PC specifications. */
+.system-panels{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.system-panel{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid #ffffff25;border-radius:10px;background:#ffffff07;font-size:12px;white-space:nowrap;transition:background 180ms,border-color 180ms}
+.system-panel:hover:enabled{background:#ffffff15;border-color:#ffffff45}
+.system-panel:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.session .pc{margin-left:0}
+@media(max-width:1100px){.system-panel{padding:0 10px}.session{gap:12px}}
+@media(max-width:900px){.system-panel span{display:none}.system-panel{width:40px;padding:0}.system-panels{gap:6px}}
+@media(max-width:600px){.system-panels{margin-left:0;gap:4px}.system-panel{width:32px;min-height:36px;border-radius:8px}.system-panel .icon{width:17px;height:17px}.session{gap:7px}}
+@media(max-width:360px){.system-panel{width:28px}.session .pc>.icon{width:18px}.session .help{width:23px}.session{gap:5px;padding:8px 6px}.session-stat>strong{font-size:13px}}

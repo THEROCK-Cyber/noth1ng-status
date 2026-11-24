@@ -1,0 +1,11 @@
+#shell-promotions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:20px;align-items:start}
+.promotion-section-card{min-width:0}.promotion-section-card img{display:block;width:100%;aspect-ratio:2.14;object-fit:cover;border-radius:10px}
+.promotion-section-card h2,.promotion-section-card p{overflow-wrap:anywhere;white-space:pre-wrap}
+.demo-line{min-height:16px}
+@media(max-width:600px){.header nav button{font-size:10px;padding-left:2px;padding-right:2px}#shell-promotions{gap:12px}}
+
+.header nav{min-width:0}.header nav button[data-page="games"]{white-space:normal;line-height:1.25}
+@media(max-width:600px){.header nav button[data-page="games"]{flex:1.6}.header nav button{font-size:10px;min-width:0}}
+
+/* Apply the chosen screen dim to wallpaper layers; keep contour contrast independent. */
+.wallpaper:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,var(--screen-background-dim,0));pointer-events:none}

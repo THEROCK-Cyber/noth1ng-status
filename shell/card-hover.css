@@ -1,0 +1,14 @@
+/* Reveal card metadata without covering artwork at rest. */
+.game-card .card-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(5,7,12,.96),rgba(5,7,12,.77) 22%,rgba(5,7,12,.18) 64%,transparent);opacity:0;transition:opacity 200ms ease-out}
+.game-card .card-caption{opacity:0;transform:translateY(7px);transition:opacity 200ms ease-out,transform 200ms cubic-bezier(.2,.7,.3,1);pointer-events:none;text-shadow:0 1px 4px #000}
+.game-card .card-caption strong{display:block;color:#fff;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-card .card-caption small{color:#e4e7ee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-card .card-play{opacity:.35;transition:opacity 200ms ease-out,background-color 200ms ease-out}
+.game-card:focus-visible .card-caption,.game-card.art-failed .card-caption,.game-card[data-art-state=unavailable] .card-caption,
+.game-wrap:has(.favorite:focus-visible) .card-caption,body.card-touch-input .game-card.selected .card-caption{opacity:1;transform:none}
+.game-card:focus-visible .card-shade,.game-card.art-failed .card-shade,.game-card[data-art-state=unavailable] .card-shade,
+.game-wrap:has(.favorite:focus-visible) .card-shade,body.card-touch-input .game-card.selected .card-shade{opacity:1}
+.game-card:focus-visible .card-play,.game-wrap:has(.favorite:focus-visible) .card-play,body.card-touch-input .game-card.selected .card-play{opacity:1;background-color:#ffffff20}
+@media(hover:hover){.game-wrap:hover .card-caption{opacity:1;transform:none}.game-wrap:hover .card-shade{opacity:1}.game-wrap:hover .card-play{opacity:1;background-color:#ffffff20}}
+body.no-motion .game-card .card-caption,body.no-motion .game-card .card-shade,body.no-motion .game-card .card-play{transition:none!important}
+@media(prefers-reduced-motion:reduce){.game-card .card-caption,.game-card .card-shade,.game-card .card-play{transition:none!important}}
