@@ -62,6 +62,13 @@ main{padding:0 32px 64px;max-width:900px;width:100%}
 .cards2 h3{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .cards2 p{font-size:16px}
 .cards2 .sm{color:var(--muted);font-size:14px;margin-top:4px}
+.prog{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px;display:grid;gap:16px}
+.prog h3{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prog .lbl{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.prog .lbl b{font-weight:600}
+.prog .lbl span{font-family:var(--display);font-weight:700;font-size:22px;font-variant-numeric:tabular-nums}
+.prog .meter{display:block;margin:8px 0 6px;min-width:0}
+.prog .sm{color:var(--muted);font-size:14px}
 
 /* Разделы-шапки */
 .acc{display:grid;gap:12px;margin-top:8px}
@@ -200,6 +207,12 @@ footer p+p{margin-top:6px}
       <div class="gate"><div class="big">0<small>из 6</small></div><div><h3>Условий для перехода</h3><p class="sm">ещё 2 готовы частично</p></div></div>
       <div><h3>Следующий шаг</h3><p>Найти причину ошибки доступа к папке Program Files и повторить пробную установку.</p><p class="sm">Делает: владелец вместе с Claude</p></div>
       <div><h3>Сейчас идёт этап</h3><p>3. Установка на все компьютеры.</p><p class="sm">Статус: есть риск</p></div>
+    </div>
+    <div class="prog">
+      <h3>Общий прогресс (примерно)</h3>
+      <div><div class="lbl"><b>Свой клуб на новой системе</b><span>≈ 38%</span></div><span class="meter"><b style="width:38%"></b></span><p class="sm">Готово 18 шагов из 47. 100% будет, когда клуб полностью перешёл и работает.</p></div>
+      <div><div class="lbl"><b>Платформа в нескольких клубах</b><span>0%</span></div><span class="meter"><b style="width:0%"></b></span><p class="sm">Ещё не планировали. 100% будет, когда свой клуб и ещё два других работают на платформе.</p></div>
+      <p class="sm">Проценты считаются по числу шагов, а шаги бывают разного размера. Если найдём новые шаги, цифра может уменьшиться.</p>
     </div>
   </div>
 
